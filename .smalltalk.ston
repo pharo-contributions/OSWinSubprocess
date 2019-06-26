@@ -1,0 +1,9 @@
+SmalltalkCISpec {
+  #loading : [
+    SCIMetacelloLoadSpec {
+      #baseline : 'OSWinSubprocess',
+      #directory : 'src',
+      #platforms : [ #pharo ]
+    }
+  ]
+}
