@@ -109,6 +109,6 @@ OSWSWinProcessTest >> testProcessTimeOut [
 	self deny: newprocess isSuccess.
 	self 
 		assert: (delta between: 3 seconds asMilliSeconds and: 4 seconds asMilliSeconds)
-		description: 'expected 3 seconds wait, got ', delta , ' milliseconds'.
+		description: 'expected 3 seconds wait, got ', delta asString , ' milliseconds'.
 	self assert: newprocess hasTimedOut
 ]
