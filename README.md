@@ -5,6 +5,45 @@ OSWinSubprocess name is really closed to the name of the [OSSubprocess projet](h
 
 Important note: As of now, this library does not yet support standard streams (stdin, stdout and stderr). It could be done by setting the appropriate information in the [STARTUPINFO structutre](https://docs.microsoft.com/fr-fr/windows/desktop/api/processthreadsapi/ns-processthreadsapi-_startupinfoa).
 
+## Installation
+**Currently, OSWinSubprocess has only be tested on Pharo 7.0**.
+From within Pharo, execute the following to install OSWinSubprocess:
+
+```Smalltalk
+Metacello new
+ 	baseline: 'OSWinSubprocess';
+ 	repository: 'github://pharo-contributions/OSWinSubprocess:master/repository';
+	load.
+```
+## Getting Started
+OSWinSubprocess is quite easy to use but depending on the user needs, there are different parts of the API that could be used. We start with a basic example and later we show more complicated scenarios.
+
+```Smalltalk
+OSWSWinProcess new 
+		shellCommand: 'echo'
+		arguments: #('ok');
+		runAndWait.
+```
+
+A subprocess consist of at least a command/binary/program to be executed (in this example `echo`) plus some optional array of arguments.
+
+## API
+OSWSWinProcess instances gives you an high-level API to run and possibly wait for the process termination. It also allows you to get back some information on the process.
+* `runAndWait` Runs the process AND waits until the child has exited. Warning: this method freezes the image until the forked process exits.
+* `runAndWaitTimeOut: nbMilliSeconds`Runs the process AND waits until the child has exited.
+* `runUnwatch` Used to run a process and forget about it
+* `run` Run the process and watch it
+* `terminate` Terminate (kill) the process. Will set a non-success exit code (3).
+* `isRunning` Answers true if the process is still running, else false.
+* `isComplete` Answers true if the process is not running and exitCode is set, else false.
+* `isSuccess` Answers true if the process is not running and exitCode is 0 and no error happened, else false.
+* `hasTimedOut` Answers true if the process did not terminate before the given timeout, else false.
+* `exitCode` Give the process exit code if set, else nil
+
+## Known limitations
+* no management of standard streams (stdin, stdout and stderr)
+* one process watcher per process instance (could have only one process watcher for all processes)
+
 ## Authors
 * **Keldon Alleyne** - *Initial binding to the Windows API through FFI* - [Keldon Alleyne](https://github.com/avasopht)
 * **Christophe Demarey** - *Initial work* - [Christophe Demarey](https://github.com/demarey)
