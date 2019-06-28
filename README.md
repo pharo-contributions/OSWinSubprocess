@@ -28,18 +28,33 @@ OSWSWinProcess new
 
 A subprocess consist of at least a command/binary/program to be executed (in this example `echo`) plus some optional array of arguments.
 
+## Configuration
+```Smalltalk
+OSWSWinProcess new 
+		command: 'echo';
+		workingDirectory: 'C:/';
+		arguments: #('ok');
+		runAndWait.
+```
+
+OsWinSubprocess offers some facilities to run a command line within a shell:
+* `shellCommand:` runs a Windows cmd.exe shell with the provided command, i.e. a string with the command name and arguments. 
+* `shellCommand:arguments:` runs a Windows cmd.exe shell with the provided command and a collection of arguments.
+Warning: Paths with spaces need to be surrounded by double quotes.
+
 ## API
 OSWSWinProcess instances gives you an high-level API to run and possibly wait for the process termination. It also allows you to get back some information on the process.
 * `runAndWait` Runs the process AND waits until the child has exited. Warning: this method freezes the image until the forked process exits.
 * `runAndWaitTimeOut: nbMilliSeconds`Runs the process AND waits until the child has exited.
 * `runUnwatch` Used to run a process and forget about it
-* `run` Run the process and watch it
-* `terminate` Terminate (kill) the process. Will set a non-success exit code (3).
+* `run` Runs the process and watch it
+* `terminate` Terminates (kill) the process. Will set a non-success exit code (3).
 * `isRunning` Answers true if the process is still running, else false.
 * `isComplete` Answers true if the process is not running and exitCode is set, else false.
 * `isSuccess` Answers true if the process is not running and exitCode is 0 and no error happened, else false.
 * `hasTimedOut` Answers true if the process did not terminate before the given timeout, else false.
-* `exitCode` Give the process exit code if set, else nil
+* `exitCode` Returns the process exit code if set, else nil
+* `lastError` Gives you the last error code value. See [Windows API documentation](https://docs.microsoft.com/en-us/windows/desktop/api/errhandlingapi/nf-errhandlingapi-getlasterror) for more information
 
 ## Known limitations
 * no management of standard streams (stdin, stdout and stderr)
