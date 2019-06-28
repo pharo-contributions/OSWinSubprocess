@@ -154,7 +154,7 @@ OSWSWinProcess >> initialize [
 
 { #category : #testing }
 OSWSWinProcess >> isComplete [
-	^ isRunning not and exitCode notNil
+	^ isRunning not and: [exitCode notNil]
 ]
 
 { #category : #testing }
