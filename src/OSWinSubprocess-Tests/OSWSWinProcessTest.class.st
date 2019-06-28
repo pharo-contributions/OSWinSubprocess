@@ -100,7 +100,7 @@ OSWSWinProcessTest >> testProcessTimeOut [
 	
 	start := Time now asMilliSeconds.
 	newprocess := OSWSWinProcess new 
-		shellCommand: 'ping -n 1 -w 50000 10.0.0.0'; "wait 50 seconds without user interupt"
+		shellCommand: 'sleep 50';
 		run;
 		waitForCompletionTimeout: 3 seconds asMilliSeconds.
 	"wait is blocking"
