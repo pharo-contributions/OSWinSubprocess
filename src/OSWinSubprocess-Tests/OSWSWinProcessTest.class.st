@@ -100,15 +100,15 @@ OSWSWinProcessTest >> testProcessTimeOut [
 	
 	start := Time now asMilliSeconds.
 	newprocess := OSWSWinProcess new 
-		shellCommand: 'timeout 50';
+		shellCommand: 'sleep 50';
 		run;
 		waitForCompletionTimeout: 3 seconds asMilliSeconds.
 	"wait is blocking"
 	delta := Time now asMilliSeconds - start.
 	self deny: newprocess isRunning.
 	self deny: newprocess isSuccess.
+	self assert: newprocess hasTimedOut.
 	self 
 		assert: (delta between: 3 seconds asMilliSeconds and: 4 seconds asMilliSeconds)
 		description: 'expected 3 seconds wait, got ', delta asString , ' milliseconds'.
-	self assert: newprocess hasTimedOut
 ]
