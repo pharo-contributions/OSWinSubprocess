@@ -29,11 +29,46 @@ OSWSWinProcess new
 A subprocess consist of at least a command/binary/program to be executed (in this example `echo`) plus some optional array of arguments.
 
 ## Configuration
+Running a process is as simple as:
 ```Smalltalk
 OSWSWinProcess new 
-		command: 'echo';
-		workingDirectory: 'C:/';
-		arguments: #('ok');
+		command: 'C:\Windows\notepad.exe';
+		runAndWait.
+```
+Notice that this call is blocking. You Pharo image is not responding until you close Notepad.exe.
+To overcome this issue, you can just run the process and keep a reference to it to konw if it is still running or just **terminate** it.
+```Smalltalk
+process := OSWSWinProcess new 
+		command: 'C:\Windows\notepad.exe';
+		run.
+...
+process terminate.
+```
+You can call a program and give it **arguments**.
+```Smalltalk
+OSWSWinProcess new 
+		command: 'C:\Windows\notepad.exe';
+		arguments: #('notepad.exe' 'foo.txt');
+		runAndWait.
+```
+Notepad will ask you to create a new file because it cannot find a file foo.txt. Note that we give the program as a first argument because it is expected by notepad.
+
+Now, create a small file `foo.txt` in `C:\` (with the UI or with a command line with administrator privileges: `echo foo > C:\foo.txt`). 
+You can now open the file with Notepad:
+```Smalltalk
+OSWSWinProcess new 
+		command: 'C:\Windows\notepad.exe';
+		arguments: #('notepad.exe' 'C:\foo.txt');
+		runAndWait.
+```
+Another way to achieve the same operation would be to set the **working directory** for the command being called:
+
+You can also configure the directory that will be used as working directory:
+```Smalltalk
+OSWSWinProcess new 
+		command: 'C:\Windows\notepad.exe';
+		workingDirectory: 'C:\';
+		arguments: #('notepad.exe' 'foo.txt');
 		runAndWait.
 ```
 
