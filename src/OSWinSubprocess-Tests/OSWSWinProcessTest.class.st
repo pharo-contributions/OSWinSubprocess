@@ -5,6 +5,31 @@ Class {
 }
 
 { #category : #tests }
+OSWSWinProcessTest >> testArgumentsString [
+	| process |
+	process := OSWSWinProcess new 
+		command: 'C:\Windows\sed.exe';
+		arguments: #('--version');
+		yourself.
+		
+	self assert: process argumentsString equals: '--version'.
+	
+	process arguments: #('''s/test/another test/''' 'myfile').
+	
+	self assert: process argumentsString equals: '''s/test/another test/'' myfile'
+]
+
+{ #category : #tests }
+OSWSWinProcessTest >> testArgumentsStringWithEmptyArguments [
+	| process |
+	process := OSWSWinProcess new 
+		command: 'C:\Windows\sed.exe';
+		yourself.
+		
+	self assert: process argumentsString equals: ''
+]
+
+{ #category : #tests }
 OSWSWinProcessTest >> testBasicCommand [
 	| newprocess |
 	Smalltalk os isWindows ifFalse: [ self skip. ^ self  ].

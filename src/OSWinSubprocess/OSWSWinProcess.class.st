@@ -84,6 +84,11 @@ OSWSWinProcess class >> WAIT_TIMEOUT [
 ]
 
 { #category : #configuring }
+OSWSWinProcess >> arguments [
+	^ arguments ifNil: [ arguments := #() ]
+]
+
+{ #category : #configuring }
 OSWSWinProcess >> arguments: aListOfArguments [
 	arguments := aListOfArguments asArray.
 ]
@@ -93,8 +98,8 @@ OSWSWinProcess >> argumentsString [
 	| args |
 	args := Character space join: 
 		(surroundArgumentsWithDoubleQuotes
-			ifTrue: [ arguments collect: #surroundedByDoubleQuotes ]
-			ifFalse: [ arguments ]).
+			ifTrue: [ self arguments collect: #surroundedByDoubleQuotes ]
+			ifFalse: [ self arguments ]).
 
 	"cmd.exe /C waits a unique argument. Wrap the whole command but /C to run with double quotes"
 	^ (command = self shellCommandPath)
