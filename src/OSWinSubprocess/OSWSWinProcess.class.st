@@ -27,13 +27,34 @@ Class {
 		'command',
 		'arguments',
 		'surroundArgumentsWithDoubleQuotes',
-		'workingDirectory'
+		'workingDirectory',
+		'creationFlags'
 	],
 	#pools : [
 		'OSWSWinTypes'
 	],
 	#category : #OSWinSubprocess
 }
+
+{ #category : #constants }
+OSWSWinProcess class >> CREATE_NO_WINDOW [
+	"The process is a console application that is being run without a console window. Therefore, the console handle for the application is not set.
+This flag is ignored if the application is not a console application, or if it is used with either CREATE_NEW_CONSOLE or DETACHED_PROCESS.
+
+More information: https://docs.microsoft.com/fr-fr/windows/win32/procthread/process-creation-flags"
+
+	^ 16r08000000
+]
+
+{ #category : #constants }
+OSWSWinProcess class >> DETACHED_PROCESS [
+	"For console processes, the new process does not inherit its parent's console (the default). The new process can call the AllocConsole function at a later time to create a console. For more information, see Creation of a Console.
+This value cannot be used with CREATE_NEW_CONSOLE.
+
+More information: https://docs.microsoft.com/fr-fr/windows/win32/procthread/process-creation-flags"
+
+	^ 16r00000008
+]
 
 { #category : #private }
 OSWSWinProcess class >> TIMEOUT_INFINITE [
@@ -42,17 +63,23 @@ OSWSWinProcess class >> TIMEOUT_INFINITE [
 
 { #category : #constants }
 OSWSWinProcess class >> WAIT_FAILED [
+	"From https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitforsingleobject
+	The function has failed. To get extended error information, call GetLastError."
 	^ 16rFFFFFFFF
 
 ]
 
 { #category : #constants }
 OSWSWinProcess class >> WAIT_OBJECT_0 [
+	"From https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitforsingleobject
+	The state of the specified object is signaled."
 	^ 0
 ]
 
 { #category : #constants }
 OSWSWinProcess class >> WAIT_TIMEOUT [
+	"From https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitforsingleobject
+	The time-out interval elapsed, and the object's state is nonsignaled."
 	^ 16r00000102
 ]
 
@@ -77,8 +104,7 @@ OSWSWinProcess >> argumentsString [
 
 { #category : #running }
 OSWSWinProcess >> basicRun [
-	| kNoWindow creationSucceeded |
-	kNoWindow := 16r08000000.
+	| creationSucceeded |
 	startupInfo := OSWSStartupInfoW externalNew.
 	startupInfo cb: startupInfo class structureSize.
 	processInfo := OSWSProcessInformation externalNew.
@@ -89,7 +115,7 @@ OSWSWinProcess >> basicRun [
 		processAttributes: ExternalAddress null
 		threadAttributes: ExternalAddress null
 		inheritHandles: false
-		creationFlags: kNoWindow
+		creationFlags: creationFlags
 		environment: ExternalAddress null
 		directory: self workingDirectoryHandle
 		startup: startupInfo
@@ -129,6 +155,16 @@ OSWSWinProcess >> completionCallback [
 	self clean
 ]
 
+{ #category : #'configuring - process creation' }
+OSWSWinProcess >> createNoWindow [
+	creationFlags := self class CREATE_NO_WINDOW
+]
+
+{ #category : #'configuring - process creation' }
+OSWSWinProcess >> detachedProcess [
+	creationFlags := self class DETACHED_PROCESS
+]
+
 { #category : #accessing }
 OSWSWinProcess >> exitCode [
 	^ exitCode 
@@ -150,6 +186,7 @@ OSWSWinProcess >> hasTimedOut [
 OSWSWinProcess >> initialize [
 	isRunning := false.
 	surroundArgumentsWithDoubleQuotes := false.
+	self detachedProcess.
 ]
 
 { #category : #testing }
