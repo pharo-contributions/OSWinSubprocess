@@ -160,14 +160,9 @@ OSWSWinProcess >> completionCallback [
 	self clean
 ]
 
-{ #category : #'configuring - process creation' }
-OSWSWinProcess >> createNoWindow [
-	creationFlags := self class CREATE_NO_WINDOW
-]
-
-{ #category : #'configuring - process creation' }
-OSWSWinProcess >> detachedProcess [
-	creationFlags := self class DETACHED_PROCESS
+{ #category : #configuring }
+OSWSWinProcess >> creationFlags: anInteger [
+	creationFlags := anInteger
 ]
 
 { #category : #accessing }
@@ -191,7 +186,7 @@ OSWSWinProcess >> hasTimedOut [
 OSWSWinProcess >> initialize [
 	isRunning := false.
 	surroundArgumentsWithDoubleQuotes := false.
-	self detachedProcess.
+	creationFlags := 0.
 ]
 
 { #category : #testing }
