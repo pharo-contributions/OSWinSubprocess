@@ -7,12 +7,12 @@ I do not manage standard and error outputs.
 WARNING: waiting a process will freeze your image while the process is running.
 
 You can use me as following:
-	PhLWinProcess new 
-		shellCommand: 'echo ok';
+	OSWSWinProcess new 
+		command: 'C:\Windows\notepad.exe';
 		runAndWait.
 		
-	PhLWinProcess new
-		shellCommand: 'timeout 1';
+	OSWSWinProcess new 
+		shellCommand: 'echo ok';
 		run.
 "
 Class {
