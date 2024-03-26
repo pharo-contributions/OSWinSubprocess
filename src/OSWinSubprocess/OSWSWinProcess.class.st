@@ -28,7 +28,8 @@ Class {
 		'arguments',
 		'surroundArgumentsWithDoubleQuotes',
 		'workingDirectory',
-		'creationFlags'
+		'creationFlags',
+		'completionCallbackBlock'
 	],
 	#pools : [
 		'OSWSWinTypes'
@@ -156,8 +157,19 @@ The string can specify the full path and file name of the module to execute or i
 
 { #category : #private }
 OSWSWinProcess >> completionCallback [
+completionCallbackBlock ifNotNil:[ completionCallbackBlock value ].
 	self setExitCode.
 	self clean
+]
+
+{ #category : #private }
+OSWSWinProcess >> completionCallbackBlock [
+^completionCallbackBlock
+]
+
+{ #category : #private }
+OSWSWinProcess >> completionCallbackBlock: aBlock [
+completionCallbackBlock := aBlock
 ]
 
 { #category : #configuring }
@@ -220,6 +232,11 @@ OSWSWinProcess >> isSuccess [
 { #category : #public }
 OSWSWinProcess >> lastError [
 	^ self ffiLibrary getLastError
+]
+
+{ #category : #private }
+OSWSWinProcess >> processInfo [
+	^processInfo 
 ]
 
 { #category : #running }
