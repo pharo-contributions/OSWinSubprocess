@@ -85,7 +85,13 @@ OSWSWinProcessLibrary >> waitForSingleObject: handle milliSeconds: ms [
 	^ self ffiCall: #( uint WaitForSingleObject (void * handle, uint ms)) module: #Kernel32
 ]
 
-{ #category : 'public' }
-OSWSWinProcessLibrary >> win32ModuleName [
+{ #category : 'accessing - platform' }
+OSWSWinProcessLibrary >> win32LibraryName [ 
 	^ 'msvcrt.dll'
+]
+
+{ #category : 'accessing - platform' }
+OSWSWinProcessLibrary >> win32ModuleName [
+	"Only kept for backward compatibility"
+	^ self win32LibraryName 
 ]
