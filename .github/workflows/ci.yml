@@ -24,7 +24,7 @@ jobs:
           Invoke-WebRequest -Uri https://files.pharo.org/get-files/130/pharoImage-x86_64.zip -OutFile image.zip
           unzip pharo-vm.zip -d pharo-vm
           unzip image.zip
-          Get-ChildItem -Path "C:\path\to\directory" -Filter "Pharo*.image" | ForEach-Object {
+          Get-ChildItem -Path . -Filter "Pharo*.image" | ForEach-Object {
             Rename-Item $_.FullName -NewName "Pharo.image"
           }
 
