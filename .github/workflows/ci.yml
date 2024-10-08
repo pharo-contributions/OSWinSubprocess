@@ -31,7 +31,7 @@ jobs:
       - name: Load project into image
         run: |
           dir
-          pharo-vm\Pharo.exe Pharo.image eval "'Pharo working dir content: ', (FileLocator workingDirectory / src) files"
+          pharo-vm\Pharo.exe Pharo.image eval "'Pharo working dir content: ', (FileLocator workingDirectory / 'src') files"
         # pharo-vm\Pharo.exe Pharo.image eval --save "Metacello new baseline: 'OSWinSubprocess'; repository: 'gitlocal://src'; ignoreImage; onConflictUseIncoming; onWarning: [:ex | ex load]; load"
 
      # - name: Run tests
