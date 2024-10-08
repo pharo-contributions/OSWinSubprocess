@@ -24,4 +24,9 @@ jobs:
           Invoke-WebRequest -Uri https://files.pharo.org/get-files/130/pharoImage-x86_64.zip -OutFile image.zip
           unzip pharo-vm.zip -d pharo-vm
           unzip image.zip
-          dir
+
+      - name: Load project into image
+        run: 	pharo Pharo.image eval --save "Metacello new baseline: 'OSWinSubprocess'; repository: 'gitlocal://src'; ignoreImage; onConflictUseIncoming; onWarning: [:ex | ex load]; load"
+
+      - name: Run tests
+        run: pharo Pharo.image test --junit-xml-output "OSWinSubprocess.*"
