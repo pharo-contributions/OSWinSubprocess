@@ -27,7 +27,7 @@ jobs:
 
       - name: Load project into image
         run: |
-          pharo.exe Pharo.image eval --save "Metacello new baseline: 'OSWinSubprocess'; repository: 'gitlocal://src'; ignoreImage; onConflictUseIncoming; onWarning: [:ex | ex load]; load"
+          pharo-vm\Pharo.exe Pharo.image eval --save "Metacello new baseline: 'OSWinSubprocess'; repository: 'gitlocal://src'; ignoreImage; onConflictUseIncoming; onWarning: [:ex | ex load]; load"
 
       - name: Run tests
-        run: pharo.exe Pharo.image test --junit-xml-output "OSWinSubprocess.*"
+        run: pharo-vm\Pharo.exe Pharo.image test --junit-xml-output "OSWinSubprocess.*"
