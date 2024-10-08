@@ -3,8 +3,8 @@ This class is in charge of watching the execution of the process given as input 
 When the process is completed, I do a callback on the process so that it cleans the process fields.
 "
 Class {
-	#name : #OSWSWinProcessWatcher,
-	#superclass : #Object,
+	#name : 'OSWSWinProcessWatcher',
+	#superclass : 'Object',
 	#instVars : [
 		'watchProcess',
 		'process'
@@ -12,21 +12,22 @@ Class {
 	#pools : [
 		'OSWSWinTypes'
 	],
-	#category : #OSWinSubprocess
+	#category : 'OSWinSubprocess',
+	#package : 'OSWinSubprocess'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 OSWSWinProcessWatcher class >> on: aProcess [
 	^ self new 
 		process: aProcess
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OSWSWinProcessWatcher >> process: aProcess [
 	process := aProcess
 ]
 
-{ #category : #watching }
+{ #category : 'watching' }
 OSWSWinProcessWatcher >> watch [
 	"active loop to catch the end of the process"
 

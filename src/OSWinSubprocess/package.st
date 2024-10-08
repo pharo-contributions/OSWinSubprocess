@@ -1,1 +1,1 @@
-Package { #name : #OSWinSubprocess }
+Package { #name : 'OSWinSubprocess' }

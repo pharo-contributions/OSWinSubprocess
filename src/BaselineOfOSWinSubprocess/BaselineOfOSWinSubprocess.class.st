@@ -1,10 +1,11 @@
 Class {
-	#name : #BaselineOfOSWinSubprocess,
-	#superclass : #BaselineOf,
-	#category : #BaselineOfOSWinSubprocess
+	#name : 'BaselineOfOSWinSubprocess',
+	#superclass : 'BaselineOf',
+	#category : 'BaselineOfOSWinSubprocess',
+	#package : 'BaselineOfOSWinSubprocess'
 }
 
-{ #category : #baselines }
+{ #category : 'baselines' }
 BaselineOfOSWinSubprocess >> baseline: spec [
 	<baseline>
 	spec

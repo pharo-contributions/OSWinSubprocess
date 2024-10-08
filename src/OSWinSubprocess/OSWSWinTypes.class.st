@@ -2,8 +2,8 @@
 Definition of Windows types used in prototypes of the functions needed to manage processes.
 "
 Class {
-	#name : #OSWSWinTypes,
-	#superclass : #SharedPool,
+	#name : 'OSWSWinTypes',
+	#superclass : 'SharedPool',
 	#classVars : [
 		'DWORD',
 		'HANDLE',
@@ -16,10 +16,11 @@ Class {
 		'LPWSTR',
 		'WORD'
 	],
-	#category : #OSWinSubprocess
+	#category : 'OSWinSubprocess',
+	#package : 'OSWinSubprocess'
 }
 
-{ #category : #'class initialization' }
+{ #category : 'class initialization' }
 OSWSWinTypes class >> initialize [ 
 	DWORD := #uint32.
 	HANDLE := 'void*'.

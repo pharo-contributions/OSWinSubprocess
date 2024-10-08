@@ -1,10 +1,11 @@
 Class {
-	#name : #OSWSWinProcessTest,
-	#superclass : #TestCase,
-	#category : #'OSWinSubprocess-Tests'
+	#name : 'OSWSWinProcessTest',
+	#superclass : 'TestCase',
+	#category : 'OSWinSubprocess-Tests',
+	#package : 'OSWinSubprocess-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 OSWSWinProcessTest >> testArgumentsString [
 	| process |
 	process := OSWSWinProcess new 
@@ -19,7 +20,7 @@ OSWSWinProcessTest >> testArgumentsString [
 	self assert: process argumentsString equals: '''s/test/another test/'' myfile'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 OSWSWinProcessTest >> testArgumentsStringWithEmptyArguments [
 	| process |
 	process := OSWSWinProcess new 
@@ -29,7 +30,7 @@ OSWSWinProcessTest >> testArgumentsStringWithEmptyArguments [
 	self assert: process argumentsString equals: ''
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 OSWSWinProcessTest >> testBasicCommand [
 	| newprocess |
 	Smalltalk os isWindows ifFalse: [ self skip. ^ self  ].
@@ -43,7 +44,7 @@ OSWSWinProcessTest >> testBasicCommand [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 OSWSWinProcessTest >> testBasicCommandWithArguments [
 	| newprocess |
 	Smalltalk os isWindows ifFalse: [ self skip. ^ self  ].
@@ -58,7 +59,7 @@ OSWSWinProcessTest >> testBasicCommandWithArguments [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 OSWSWinProcessTest >> testCanDetectIfProcessIsRunning [
 	| newprocess |
 	Smalltalk os isWindows ifFalse: [ self skip. ^ self  ].
@@ -72,7 +73,7 @@ OSWSWinProcessTest >> testCanDetectIfProcessIsRunning [
 		
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 OSWSWinProcessTest >> testCanTerminateProcess [
 	| newprocess succeeded |
 	Smalltalk os isWindows ifFalse: [ self skip. ^ self  ].
@@ -88,7 +89,7 @@ OSWSWinProcessTest >> testCanTerminateProcess [
 	self deny: newprocess isSuccess.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 OSWSWinProcessTest >> testGivenACommandIncludingNonAsciiCharsThenCommandSucceed [
 	| newprocess tempDir |
 	Smalltalk os isWindows ifFalse: [ self skip. ^ self  ].
@@ -107,7 +108,7 @@ OSWSWinProcessTest >> testGivenACommandIncludingNonAsciiCharsThenCommandSucceed 
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 OSWSWinProcessTest >> testGivenBasicCommandWhenCommandDoesNotExistThenExitCodeIsNot0 [
 	| newprocess |
 	Smalltalk os isWindows ifFalse: [ self skip. ^ self  ].
@@ -118,7 +119,7 @@ OSWSWinProcessTest >> testGivenBasicCommandWhenCommandDoesNotExistThenExitCodeIs
 	self deny: newprocess isSuccess
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 OSWSWinProcessTest >> testProcessTimeOut [
 	| newprocess start delta |
 	Smalltalk os isWindows ifFalse: [ self skip. ^ self  ].

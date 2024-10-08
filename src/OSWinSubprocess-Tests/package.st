@@ -1,1 +1,1 @@
-Package { #name : #'OSWinSubprocess-Tests' }
+Package { #name : 'OSWinSubprocess-Tests' }

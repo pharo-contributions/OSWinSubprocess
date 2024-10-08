@@ -1,6 +1,6 @@
-Extension { #name : #String }
+Extension { #name : 'String' }
 
-{ #category : #'*OSWinSubprocess' }
+{ #category : '*OSWinSubprocess' }
 String >> surroundedByDoubleQuotes [
 	"Answer the receiver with leading and trailing double quotes.  "
 

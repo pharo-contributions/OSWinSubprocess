@@ -16,8 +16,8 @@ You can use me as following:
 		run.
 "
 Class {
-	#name : #OSWSWinProcess,
-	#superclass : #Object,
+	#name : 'OSWSWinProcess',
+	#superclass : 'Object',
 	#instVars : [
 		'exitCode',
 		'isRunning',
@@ -33,10 +33,11 @@ Class {
 	#pools : [
 		'OSWSWinTypes'
 	],
-	#category : #OSWinSubprocess
+	#category : 'OSWinSubprocess',
+	#package : 'OSWinSubprocess'
 }
 
-{ #category : #constants }
+{ #category : 'constants' }
 OSWSWinProcess class >> CREATE_NO_WINDOW [
 	"The process is a console application that is being run without a console window. Therefore, the console handle for the application is not set.
 This flag is ignored if the application is not a console application, or if it is used with either CREATE_NEW_CONSOLE or DETACHED_PROCESS.
@@ -46,7 +47,7 @@ More information: https://docs.microsoft.com/fr-fr/windows/win32/procthread/proc
 	^ 16r08000000
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 OSWSWinProcess class >> DETACHED_PROCESS [
 	"For console processes, the new process does not inherit its parent's console (the default). The new process can call the AllocConsole function at a later time to create a console. For more information, see Creation of a Console.
 This value cannot be used with CREATE_NEW_CONSOLE.
@@ -56,12 +57,12 @@ More information: https://docs.microsoft.com/fr-fr/windows/win32/procthread/proc
 	^ 16r00000008
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 OSWSWinProcess class >> TIMEOUT_INFINITE [
 	^ 16rffffffff
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 OSWSWinProcess class >> WAIT_FAILED [
 	"From https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitforsingleobject
 	The function has failed. To get extended error information, call GetLastError."
@@ -69,31 +70,31 @@ OSWSWinProcess class >> WAIT_FAILED [
 
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 OSWSWinProcess class >> WAIT_OBJECT_0 [
 	"From https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitforsingleobject
 	The state of the specified object is signaled."
 	^ 0
 ]
 
-{ #category : #constants }
+{ #category : 'constants' }
 OSWSWinProcess class >> WAIT_TIMEOUT [
 	"From https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitforsingleobject
 	The time-out interval elapsed, and the object's state is nonsignaled."
 	^ 16r00000102
 ]
 
-{ #category : #configuring }
+{ #category : 'configuring' }
 OSWSWinProcess >> arguments [
 	^ arguments ifNil: [ arguments := #() ]
 ]
 
-{ #category : #configuring }
+{ #category : 'configuring' }
 OSWSWinProcess >> arguments: aListOfArguments [
 	arguments := aListOfArguments asArray.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OSWSWinProcess >> argumentsString [
 	| args |
 	args := Character space join: 
@@ -107,7 +108,7 @@ OSWSWinProcess >> argumentsString [
 		ifFalse: [ args ]
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 OSWSWinProcess >> basicRun [
 	| creationSucceeded |
 	startupInfo := OSWSStartupInfoW externalNew.
@@ -131,7 +132,7 @@ OSWSWinProcess >> basicRun [
 	isRunning := true.
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 OSWSWinProcess >> clean [
 	processInfo getHandle
 		ifNotNil: 
@@ -141,12 +142,12 @@ OSWSWinProcess >> clean [
 	startupInfo free
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 OSWSWinProcess >> closeHandle: handle [
 	^ self ffiLibrary closeHandle: handle
 ]
 
-{ #category : #configuring }
+{ #category : 'configuring' }
 OSWSWinProcess >> command: appName [
 	"The name of the module to be executed. This module can be a Windows-based application. It can be some other type of module (for example, MS-DOS or OS/2) if the appropriate subsystem is available on the local computer.
 
@@ -154,47 +155,47 @@ The string can specify the full path and file name of the module to execute or i
 	command := appName
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 OSWSWinProcess >> completionCallback [
 	self setExitCode.
 	self clean
 ]
 
-{ #category : #configuring }
+{ #category : 'configuring' }
 OSWSWinProcess >> creationFlags: anInteger [
 	creationFlags := anInteger
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 OSWSWinProcess >> exitCode [
 	^ exitCode 
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 OSWSWinProcess >> ffiLibrary [
 	^ OSWSWinProcessLibrary uniqueInstance
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 OSWSWinProcess >> hasTimedOut [
 	^ self isRunning not 
 		and: [ lastErrorCode isNil 
 		and: [ exitCode isNil ] ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 OSWSWinProcess >> initialize [
 	isRunning := false.
 	surroundArgumentsWithDoubleQuotes := false.
 	creationFlags := 0.
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 OSWSWinProcess >> isComplete [
 	^ isRunning not and: [exitCode notNil]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 OSWSWinProcess >> isRunning [
 	"see https://docs.microsoft.com/en-us/windows/desktop/api/synchapi/nf-synchapi-waitforsingleobject for more information"
 	| returnValue |
@@ -210,25 +211,25 @@ OSWSWinProcess >> isRunning [
 	^ returnValue = self class WAIT_TIMEOUT
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 OSWSWinProcess >> isSuccess [
 	^ self isRunning not 
 		and: [ lastErrorCode isNil 
 		and: [ self exitCode = 0 ] ]
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 OSWSWinProcess >> lastError [
 	^ self ffiLibrary getLastError
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 OSWSWinProcess >> run [
 	self basicRun.
 	self watch.
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 OSWSWinProcess >> runAndWait [
 	" This methods runs the subprocess AND waits until the child has exited. "
 	
@@ -236,7 +237,7 @@ OSWSWinProcess >> runAndWait [
 	self waitForCompletion.
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 OSWSWinProcess >> runAndWaitTimeOut: nbMilliSeconds [
 	" This methods runs the subprocess AND waits until the child has exited. "
 	
@@ -244,14 +245,14 @@ OSWSWinProcess >> runAndWaitTimeOut: nbMilliSeconds [
 	self waitForCompletionTimeout: nbMilliSeconds.
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 OSWSWinProcess >> runUnwatch [ 
 	"Used to run a process and forget about it"
 	[ self basicRun ]
 	ensure: [ self clean ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 OSWSWinProcess >> setExitCode [
 	| exitCodeValueHolder succeeded |
 	
@@ -266,17 +267,17 @@ OSWSWinProcess >> setExitCode [
 	exitCode := exitCodeValueHolder value
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 OSWSWinProcess >> setLastErrorCode [
 	^ lastErrorCode := self lastError
 ]
 
-{ #category : #configuring }
+{ #category : 'configuring' }
 OSWSWinProcess >> shellCommand [
 	command := self shellCommandPath
 ]
 
-{ #category : #configuring }
+{ #category : 'configuring' }
 OSWSWinProcess >> shellCommand: aShellCommandString [
 	"This is a simple facility method for the cases when the user wants to use shell as the program.
 	This way, the user can directly send shellCommand: 'ECHO y| DEL *.txt' with the whole string 
@@ -285,7 +286,7 @@ OSWSWinProcess >> shellCommand: aShellCommandString [
 	arguments := Array withAll: (Character space split: aShellCommandString).
 ]
 
-{ #category : #configuring }
+{ #category : 'configuring' }
 OSWSWinProcess >> shellCommand: aShellCommandName arguments: aListOfArguments [
 	"This is a simple facility method for the cases when the user wants to use shell as the program.
 	This way, the user can directly send shellCommand: 'ECHO' arguments: #('1 + 1' '>' 'a filename with spaces.txt')' 
@@ -296,17 +297,17 @@ OSWSWinProcess >> shellCommand: aShellCommandName arguments: aListOfArguments [
 	arguments := arguments asArray.
 ]
 
-{ #category : #configuring }
+{ #category : 'configuring' }
 OSWSWinProcess >> shellCommandPath [
 	^ 'C:\Windows\System32\cmd.exe'.
 ]
 
-{ #category : #configuring }
+{ #category : 'configuring' }
 OSWSWinProcess >> surroundArgumentsWithDoubleQuotes [
 	surroundArgumentsWithDoubleQuotes := true.
 ]
 
-{ #category : #public }
+{ #category : 'public' }
 OSWSWinProcess >> terminate [
 	| success |
 	self isRunning ifFalse: [ ^ true ].
@@ -318,12 +319,12 @@ OSWSWinProcess >> terminate [
 	^ success
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 OSWSWinProcess >> waitForCompletion [
 	self waitForCompletionTimeout: self class TIMEOUT_INFINITE.
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 OSWSWinProcess >> waitForCompletionTimeout: nbMilliSeconds [
 	| returnValue |
 	[ returnValue := self ffiLibrary
@@ -337,17 +338,17 @@ OSWSWinProcess >> waitForCompletionTimeout: nbMilliSeconds [
 	ensure: [ self terminate ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 OSWSWinProcess >> watch [
 	(OSWSWinProcessWatcher on: self) watch
 ]
 
-{ #category : #configuring }
+{ #category : 'configuring' }
 OSWSWinProcess >> workingDirectory: aPathString [
 	workingDirectory := aPathString
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 OSWSWinProcess >> workingDirectoryHandle [
 	^ workingDirectory 
 		ifNil: [ ExternalAddress null ]
