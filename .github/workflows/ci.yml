@@ -21,5 +21,5 @@ jobs:
       - name: Download Pharo
         run: |
           Invoke-WebRequest -Uri https://files.pharo.org/get-files/130/pharo-vm-Windows-x86_64-stable.zip -OutFile pharo-vm-Windows-x86_64-stable.zip
-          unzip pharo-vm-Windows-x86_64-stable.zip
+          unzip pharo-vm-Windows-x86_64-stable.zip -d pharo-vm
           dir
