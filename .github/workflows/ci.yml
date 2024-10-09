@@ -29,6 +29,7 @@ jobs:
 
       - name: Download Pharo
         run: |
+          echo $Env:PHARO_VERSION
           echo $Env:PHARO_FILES_URL
           echo $env:PHARO_FILES_URL
           echo $PHARO_FILES_URL
