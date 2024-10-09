@@ -13,11 +13,13 @@ on:
 
 env:
   PHARO_VERSION: 13
-  PHARO_FILES_URL: "https://files.pharo.org/get-files/${{ env.PHARO_VERSION }}0"
 
 jobs:
   test:
     runs-on: windows-latest
+
+    env:
+        PHARO_FILES_URL: "https://files.pharo.org/get-files/${{ env.PHARO_VERSION }}0"
 
     steps:
       - uses: actions/checkout@v4
