@@ -18,10 +18,11 @@ jobs:
   test:
     runs-on: windows-latest
 
-    env:
-        PHARO_FILES_URL: "https://files.pharo.org/get-files/${{ env.PHARO_VERSION }}0"
-
     steps:
+      - name: Configure environment variables
+        run: |
+          echo "PHARO_FILES_URL=https://files.pharo.org/get-files/${{ env.PHARO_VERSION }}0" >> $GITHUB_ENV
+          
       - uses: actions/checkout@v4
         with:
            fetch-depth: 0
