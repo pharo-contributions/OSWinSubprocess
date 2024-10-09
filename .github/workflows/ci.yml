@@ -29,14 +29,10 @@ jobs:
 
       - name: Download Pharo
         run: |
-          echo $Env:PHARO_VERSION
-          echo $Env:PHARO_FILES_URL
-          echo $env:PHARO_FILES_URL
-          echo $PHARO_FILES_URL
           $url = $Env:PHARO_FILES_URL + "/pharo-vm-Windows-x86_64-stable.zip"
-          echo $url
           Invoke-WebRequest -Uri $url -OutFile pharo-vm.zip
-          Invoke-WebRequest -Uri $Env:PHARO_FILES_URL+"/pharoImage-x86_64.zip" -OutFile image.zip
+          $url = $Env:PHARO_FILES_URL + "/pharoImage-x86_64.zip"
+          Invoke-WebRequest -Uri $url -OutFile image.zip
           unzip pharo-vm.zip -d pharo-vm
           unzip image.zip
           Get-ChildItem -Path . -Filter "Pharo*.image" | ForEach-Object {
