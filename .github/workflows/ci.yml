@@ -19,25 +19,14 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Configure environment variables
-        run: |
-          echo "PHARO_FILES_URL=https://files.pharo.org/get-files/${{ env.PHARO_VERSION }}0" >> $env:GITHUB_ENV
-          
       - uses: actions/checkout@v4
         with:
            fetch-depth: 0
 
-      - name: Download Pharo
-        run: |
-          $url = $Env:PHARO_FILES_URL + "/pharo-vm-Windows-x86_64-stable.zip"
-          Invoke-WebRequest -Uri $url -OutFile pharo-vm.zip
-          $url = $Env:PHARO_FILES_URL + "/pharoImage-x86_64.zip"
-          Invoke-WebRequest -Uri $url -OutFile image.zip
-          unzip pharo-vm.zip -d pharo-vm
-          unzip image.zip
-          Get-ChildItem -Path . -Filter "Pharo*.image" | ForEach-Object {
-            Rename-Item $_.FullName -NewName "Pharo.image"
-          }
+      - uses: demarey/pharo-setup-gha@main
+        with:
+          version: 13
+        name: Download Pharo
 
       - name: Load project into image
         run: |
