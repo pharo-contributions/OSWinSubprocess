@@ -11,11 +11,13 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-env:
-  PHARO_VERSION: 13
-
 jobs:
   test:
+    strategy:
+      fail-fast: false
+      matrix:
+        version: [12, 13]
+
     runs-on: windows-latest
 
     steps:
@@ -31,11 +33,11 @@ jobs:
       - name: Load project into image
         run: |
           dir
-          pharo-vm\Pharo.exe Pharo.image eval "'Pharo working dir content: ', (Character space join: (FileLocator workingDirectory / 'src') entries)"
-          pharo-vm\Pharo.exe Pharo.image eval --save "Metacello new baseline: 'OSWinSubprocess'; repository: 'gitlocal://src'; ignoreImage; onConflictUseIncoming; onWarning: [:ex | ex load]; load. PackageOrganizer default packages select: [ :pkg | pkg name beginsWith: 'OSWinSubprocess' ] thenCollect: #name"
+          $PHARO Pharo.image eval "'Pharo working dir content: ', (Character space join: (FileLocator workingDirectory / 'src') entries)"
+          $PHARO Pharo.image eval --save "Metacello new baseline: 'OSWinSubprocess'; repository: 'gitlocal://src'; ignoreImage; onConflictUseIncoming; onWarning: [:ex | ex load]; load. PackageOrganizer default packages select: [ :pkg | pkg name beginsWith: 'OSWinSubprocess' ] thenCollect: #name"
 
       - name: Run tests
-        run: pharo-vm\Pharo.exe Pharo.image test --junit-xml-output "OSWinSubprocess.*"
+        run: $PHARO Pharo.image test --junit-xml-output "OSWinSubprocess.*"
         
       - name: Upload test results
         uses: actions/upload-artifact@v4  
