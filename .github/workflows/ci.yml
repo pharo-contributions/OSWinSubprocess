@@ -33,11 +33,12 @@ jobs:
       - name: Load project into image
         run: |
           dir
-          $PHARO Pharo.image eval "'Pharo working dir content: ', (Character space join: (FileLocator workingDirectory / 'src') entries)"
-          $PHARO Pharo.image eval --save "Metacello new baseline: 'OSWinSubprocess'; repository: 'gitlocal://src'; ignoreImage; onConflictUseIncoming; onWarning: [:ex | ex load]; load. PackageOrganizer default packages select: [ :pkg | pkg name beginsWith: 'OSWinSubprocess' ] thenCollect: #name"
+          & "$Env:PHARO" Pharo.image eval "'Pharo working dir content: ', (Character space join: (FileLocator workingDirectory / 'src') entries)"
+          & "$Env:PHARO" Pharo.image eval --save "Metacello new baseline: 'OSWinSubprocess'; repository: 'gitlocal://src'; ignoreImage; onConflictUseIncoming; onWarning: [:ex | ex load]; load. PackageOrganizer default packages select: [ :pkg | pkg name beginsWith: 'OSWinSubprocess' ] thenCollect: #name"
 
       - name: Run tests
-        run: $PHARO Pharo.image test --junit-xml-output "OSWinSubprocess.*"
+        run: |
+          & "$Env:PHARO" Pharo.image test --junit-xml-output "OSWinSubprocess.*"
         
       - name: Upload test results
         uses: actions/upload-artifact@v4  
