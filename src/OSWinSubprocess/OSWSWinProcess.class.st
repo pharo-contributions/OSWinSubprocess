@@ -185,9 +185,10 @@ OSWSWinProcess >> hasTimedOut [
 
 { #category : 'initialization' }
 OSWSWinProcess >> initialize [
+	super initialize.
 	isRunning := false.
 	surroundArgumentsWithDoubleQuotes := false.
-	creationFlags := 0.
+	creationFlags := self class DETACHED_PROCESS.
 ]
 
 { #category : 'testing' }
