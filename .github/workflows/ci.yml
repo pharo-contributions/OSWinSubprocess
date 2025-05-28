@@ -32,7 +32,7 @@ jobs:
 
       - name: Load project into image
         run: |
-          dir
+          dir 
           & "$Env:PHARO" Pharo.image eval "'Pharo working dir content: ', (Character space join: (FileLocator workingDirectory / 'src') entries)"
           & "$Env:PHARO" Pharo.image eval --save "Metacello new baseline: 'OSWinSubprocess'; repository: 'gitlocal://src'; ignoreImage; onConflictUseIncoming; onWarning: [:ex | ex load]; load. PackageOrganizer default packages select: [ :pkg | pkg name beginsWith: 'OSWinSubprocess' ] thenCollect: #name"
 
