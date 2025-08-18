@@ -1,0 +1,48 @@
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "master" branch
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        version: [12, 13]
+
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+           fetch-depth: 0
+
+      - uses: demarey/pharo-setup-gha@main
+        with:
+          version: 13
+        name: Download Pharo
+
+      - name: Load project into image
+        run: |
+          dir 
+          & "$Env:PHARO" Pharo.image eval "'Pharo working dir content: ', (Character space join: (FileLocator workingDirectory / 'src') entries)"
+          & "$Env:PHARO" Pharo.image eval --save "Metacello new baseline: 'OSWinSubprocess'; repository: 'gitlocal://src'; ignoreImage; onConflictUseIncoming; onWarning: [:ex | ex load]; load. PackageOrganizer default packages select: [ :pkg | pkg name beginsWith: 'OSWinSubprocess' ] thenCollect: #name"
+
+      - name: Run tests
+        run: |
+          & "$Env:PHARO" Pharo.image test --junit-xml-output "OSWinSubprocess.*"
+        
+      - name: Upload test results
+        uses: actions/upload-artifact@v4  
+        if: success() || failure()        # run this step even if previous step failed
+        with:
+          name: test-results
+          path: ./*-Test.xml
